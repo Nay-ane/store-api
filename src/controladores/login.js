@@ -1,8 +1,7 @@
 const conexao = require("../conexao");
-const bcrypt = require('bcrypt')
+const segredo = require('../segredo');
+const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
-
-const segredo = require('../segredo')
 
 const ERRO_EMAIL_OU_SENHA_NAO_INFORMADO = "O email e senha são obrigatórios";
 const ERRO_USUARIO_NAO_ENCONTRADO = "O usuário não foi encontrado";
