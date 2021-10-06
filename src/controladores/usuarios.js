@@ -40,7 +40,7 @@ const cadastrarUsuario = async (req, res) => {
 
         return res.status(201).json();
     } catch (error) {
-        res.status(404).json({ mensagem: error.message });
+        res.status(400).json({ mensagem: error.message });
     }
 };
 
@@ -59,22 +59,23 @@ const detalharUsuario = async (req, res) => {
 const atualizarUsuario = async (req, res) => {
     const id = req.usuarioId;
     const atualizacaoUsuario = req.body;
-    const senhaCriptografada = await bcrypt.hash(atualizacaoUsuario.senha, 10);
 
     try {
+        const senhaCriptografada = await bcrypt.hash(atualizacaoUsuario.senha, 10);
         validarBody(atualizacaoUsuario);
         const usuario = await buscarUsuarioPorId(id);
 
         if (atualizacaoUsuario.email !== usuario.email) {
-            validarEmailExistente(atualizacaoUsuario.email);
+            await validarEmailExistente(atualizacaoUsuario.email);
         }
 
         const query = ` update usuarios set 
             nome = $1,
             email = $2,
             senha = $3,
-            nome_loja = $4,
+            nome_loja = $4
             where id = $5 `;
+
         const usuarioAtualizado = conexao.query(query, [
             atualizacaoUsuario.nome,
             atualizacaoUsuario.email,
@@ -116,7 +117,7 @@ const validarEmailExistente = async (email) => {
     const usuario = await conexao.query(query, [email]);
 
     if (usuario.rowCount > 0) {
-        throw { mensagem: ERRO_EMAIL_JA_CADASTRADO };
+        throw { message: ERRO_EMAIL_JA_CADASTRADO };
     }
 };
 
