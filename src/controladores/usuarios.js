@@ -35,13 +35,13 @@ const cadastrarUsuario = async (req, res) => {
         if (usuarioCadastrado.rowCount === 0) {
             return res
                 .status(400)
-                .json({ message: ERRO_USUARIO_NAO_CADASTRADO });
+                .json({ mensagem: ERRO_USUARIO_NAO_CADASTRADO });
         }
 
         return res.status(201).json();
     } catch (error) {
         res.status(404).json({ mensagem: error.message });
-    };
+    }
 };
 
 const detalharUsuario = async (req, res) => {
@@ -52,7 +52,7 @@ const detalharUsuario = async (req, res) => {
         const { nome, email, nome_loja } = usuario;
         return res.status(200).json({ id, nome, email, nome_loja });
     } catch (error) {
-        res.status(400).json(error.message);
+        res.status(400).json({ mensagem: error.message });
     }
 };
 
@@ -89,7 +89,7 @@ const atualizarUsuario = async (req, res) => {
 
         return res.status(200).json();
     } catch (error) {
-        res.status(400).json(error.message);
+        res.status(400).json({ mensagem: error.message });
     }
 };
 
